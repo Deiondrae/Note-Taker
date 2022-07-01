@@ -1,3 +1,4 @@
+//import express to start server
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,11 +13,11 @@ const { notes } = require("./db/db.json")
 const shortid = require('shortid');
 
 
-
+//get all notes
 app.get("/api/notes", (req, res) => {
     res.json(notes)
 })
-
+//add a new note
 app.post("/api/notes", (req, res) => {
     req.body.id =  shortid.generate();
 
@@ -27,7 +28,7 @@ app.post("/api/notes", (req, res) => {
         res.json(note)
     }
 })
-
+//give notes unique id then push new notes to db.json array
 function createNewNote(body, notesArray) {
     const note = body;
     notesArray.push(note)
@@ -38,7 +39,7 @@ function createNewNote(body, notesArray) {
 
     return note;
 }
-
+//open db.json file, filter out index with matching id
 function deleteNoteById(id) {
     fs.readFile(
       path.join(__dirname, "./db/db.json"),
@@ -63,6 +64,7 @@ function deleteNoteById(id) {
     return 200;
     
 }
+//make sure notes have both a title and a text field
 function validateNotes(note){
     if (!note.title) {
         return false;
@@ -72,14 +74,15 @@ function validateNotes(note){
     }
     return true;
 }
-
+//loads index.html
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/index.html"))
 })
+//load notes.html
 app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname, "./public/notes.html"))
 })
-
+//delete note based on id
 app.delete("/api/notes/:id", (req, res) => {
     const result = deleteNoteById(req.params.id);
     if (result) {
@@ -89,7 +92,7 @@ app.delete("/api/notes/:id", (req, res) => {
     res.send(404);
 }
 })
-
+// start server
 app.listen(PORT, ()=> {
     console.log(`API server is now on port ${PORT}`);
 });
