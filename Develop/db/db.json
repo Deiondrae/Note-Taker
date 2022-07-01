@@ -1,8 +1,24 @@
 {
-    "notes": [
-        {
-            "title":"Test Title",
-            "text":"Test text"
-        }
-    ]
+  "notes": [
+    {
+      "title": "Test Posting new title",
+      "text": "Test posting new text",
+      "id": "1"
+    },
+    {
+      "title": "Test Posting new title",
+      "text": "Test text 1234 with validation",
+      "id": "3"
+    },
+    {
+      "title": "Note 1",
+      "text": "Text 1",
+      "id": "2"
+    },
+    {
+      "title": "note 2",
+      "text": "note 2",
+      "id": "3"
+    }
+  ]
 }
