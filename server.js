@@ -1,6 +1,6 @@
 const express = require('express');
-const PORT = process.env.PORT || 3001;
 const app = express();
+const PORT = process.env.PORT || 3001;
 //parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
 //parse incoming JSON data
@@ -9,6 +9,8 @@ app.use(express.static('./public'));
 const fs = require("fs");
 const path = require("path");
 const { notes } = require("./db/db.json")
+
+
 
 app.get("/api/notes", (req, res) => {
     res.json(notes)
@@ -51,13 +53,14 @@ function deleteNoteById(id) {
             JSON.stringify({ notes }, null, 2),
             function (err) {
               if (err) throw err;
-              console.log("Note deleted!");
+              console.log("Note deleted")
             }
           );
         }
       }
     );
     return 200;
+    
 }
 function validateNotes(note){
     if (!note.title) {
