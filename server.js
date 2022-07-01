@@ -9,6 +9,7 @@ app.use(express.static('./public'));
 const fs = require("fs");
 const path = require("path");
 const { notes } = require("./db/db.json")
+const shortid = require('shortid');
 
 
 
@@ -17,7 +18,7 @@ app.get("/api/notes", (req, res) => {
 })
 
 app.post("/api/notes", (req, res) => {
-    req.body.id =  notes.length.toString();
+    req.body.id =  shortid.generate();
 
     if (!validateNotes(req.body)) {
         res.status(400).send("The note is not properly formatted.");
