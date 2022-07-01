@@ -39,30 +39,16 @@ function createNewNote(body, notesArray) {
 
     return note;
 }
-//open db.json file, filter out index with matching id
+// delete note with matching id and write to file
 function deleteNoteById(id) {
-    fs.readFile(
-      path.join(__dirname, "./db/db.json"),
-      "utf8",
-      function (err, data) {
-        if (err) {
-          console.log(err);
-        } else {
-          let { notes } = JSON.parse(data);
-          notes = notes.filter((note) => note.id !== id);
-          fs.writeFile(
-            path.join(__dirname, "./db/db.json"),
-            JSON.stringify({ notes }, null, 2),
-            function (err) {
-              if (err) throw err;
-              console.log("Note deleted")
-            }
-          );
-        }
-      }
-    );
-    return 200;
-    
+  const idx = notes.findIndex((note) => note.id === id);
+  notes.splice(idx, 1);
+  fs.writeFileSync(
+    path.join(__dirname, "./db/db.json"),
+    JSON.stringify({ notes }, null, 2)
+  );
+
+  return 200;
 }
 //make sure notes have both a title and a text field
 function validateNotes(note){
