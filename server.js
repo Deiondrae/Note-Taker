@@ -5,10 +5,10 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 //parse incoming JSON data
 app.use(express.json());
-app.use(express.static('./Develop/public'));
+app.use(express.static('./public'));
 const fs = require("fs");
 const path = require("path");
-const { notes } = require("./Develop/db/db.json")
+const { notes } = require("./db/db.json")
 
 app.get("/api/notes", (req, res) => {
     res.json(notes)
@@ -29,7 +29,7 @@ function createNewNote(body, notesArray) {
     const note = body;
     notesArray.push(note)
     fs.writeFileSync(
-        path.join(__dirname, "./Develop/db/db.json"),
+        path.join(__dirname, "./db/db.json"),
         JSON.stringify({ notes: notesArray }, null, 2)
     );
 
@@ -38,7 +38,7 @@ function createNewNote(body, notesArray) {
 
 function deleteNoteById(id) {
     fs.readFile(
-      path.join(__dirname, "./Develop/db/db.json"),
+      path.join(__dirname, "./db/db.json"),
       "utf8",
       function (err, data) {
         if (err) {
@@ -47,11 +47,11 @@ function deleteNoteById(id) {
           let { notes } = JSON.parse(data);
           notes = notes.filter((note) => note.id !== id);
           fs.writeFile(
-            path.join(__dirname, "./Develop/db/db.json"),
+            path.join(__dirname, "./db/db.json"),
             JSON.stringify({ notes }, null, 2),
             function (err) {
               if (err) throw err;
-              console.log("Note deleted");
+              console.log("Note deleted!");
             }
           );
         }
@@ -70,20 +70,21 @@ function validateNotes(note){
 }
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "./Develop/public/index.html"))
+    res.sendFile(path.join(__dirname, "./public/index.html"))
 })
 app.get("/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, "./Develop/public/notes.html"))
+    res.sendFile(path.join(__dirname, "./public/notes.html"))
 })
 
 app.delete("/api/notes/:id", (req, res) => {
     const result = deleteNoteById(req.params.id);
     if (result) {
+        console.log(result)
         res.json(result);
     } else {
     res.send(404);
 }
-});
+})
 
 app.listen(PORT, ()=> {
     console.log(`API server is now on port ${PORT}`);
